@@ -6,7 +6,9 @@
 #include "Plane.h"
 #include "Player.h"
 #include "Button.h"
+#include "CharacterRifle.h"
 #include "Label.h"
+#include "Obstacle.h"
 #include "Target.h"
 
 class PlayScene : public Scene
@@ -30,7 +32,9 @@ private:
 
 	Plane* m_pPlaneSprite;
 	Target* m_pTarget;
+	CharacterRifle* m_pCharacterRifle;
 
+	bool m_isWorking;
 	/*Player* m_pPlayer;
 	bool m_playerFacingRight;*/
 

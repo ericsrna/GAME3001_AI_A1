@@ -44,28 +44,49 @@ void PlayScene::handleEvents()
 	{
 		TheGame::Instance()->quit();
 	}
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1)) // Seeking
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1) && !m_isWorking) // Seeking
 	{
-		m_pTarget->getTransform()->position = glm::vec2(750.0f, 550.0f);
-		m_pTarget->setEnabled(true); 
-		m_pPlaneSprite->getTransform()->position = glm::vec2(50.0f, 50.0f);
-		m_pPlaneSprite->setEnabled(true);
-		m_pPlaneSprite->setDestination(m_pTarget->getTransform()->position);
+		m_isWorking = true;
+		m_pTarget->getTransform()->position = glm::vec2(500.0f, 400.0f);
+		m_pTarget->setEnabled(true);
+
+		m_pCharacterRifle->setAlgorithmIndex(1);
+		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 50.0f);
+		m_pCharacterRifle->setEnabled(true);
+		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
+		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2)) // Fleeing
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2) && !m_isWorking) // Fleeing
 	{
+		m_isWorking = true;
 		m_pTarget->getTransform()->position = glm::vec2(750.0f, 550.0f);
 		m_pTarget->setEnabled(true);
-		m_pPlaneSprite->getTransform()->position = glm::vec2(650.0f, 480.0f);
-		m_pPlaneSprite->setEnabled(true);
-		m_pPlaneSprite->setDestination(m_pTarget->getTransform()->position);
-	}
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3)) // Arrival
-	{
 
+		m_pCharacterRifle->setAlgorithmIndex(2);
+		m_pCharacterRifle->getTransform()->position = glm::vec2(650.0f, 480.0f);
+		m_pCharacterRifle->setEnabled(true);
+		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
+		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4)) // Obstacle Avoidance
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3) && !m_isWorking) // Arrival
 	{
+		m_isWorking = true;
+
+		m_pCharacterRifle->setAlgorithmIndex(3);
+	}
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4) && !m_isWorking) // Obstacle Avoidance
+	{
+		m_isWorking = true;
+
+		m_pCharacterRifle->setAlgorithmIndex(4);
+	}
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_5)) // Reset
+	{
+		m_isWorking = false;
+		m_pCharacterRifle->setEnabled(false);
+		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 50.0f);
+		m_pCharacterRifle->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+		m_pCharacterRifle->setRotation(0.0f);
 
 	}
 }
@@ -82,11 +103,17 @@ void PlayScene::start()
 	m_pPlaneSprite->setMaxSpeed(10.0f);
 	addChild(m_pPlaneSprite);
 
+	m_pCharacterRifle = new CharacterRifle();
+	m_pCharacterRifle->setEnabled(false);
+	addChild(m_pCharacterRifle);
+
 	// Target
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(700.0f, 500.0f);
 	m_pTarget->setEnabled(false);
 	addChild(m_pTarget);
+
+	m_isWorking = false;
 }
 
 void PlayScene::GUI_Function() const
