@@ -14,10 +14,12 @@ CharacterRifle::CharacterRifle()
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(CHARACTER_RIFLE);
-	setMaxSpeed(5.0f);
+	setMaxSpeed(7.0f);
 	setOrientation(glm::vec2(0.0f, -1.0f));
-	setAccelerationRate(2.0f);
-	setTurnRate(5.0f);
+	setAccelerationRate(3.5f);
+	setTurnRate(2.5f);
+	setTargetRadius(30.0f);
+	setSlowRadius(350.0f);
 }
 
 CharacterRifle::~CharacterRifle()
@@ -120,18 +122,20 @@ void CharacterRifle::setAlgorithmIndex(short index)
 	m_algorithmIndex = index;
 }
 
-void CharacterRifle::m_MoveSeeking()
+void CharacterRifle::setTargetRadius(float radius)
 {
-	auto deltaTime = TheGame::Instance()->getDeltaTime();
+	m_targetRadius = radius;
+}
 
-	// direction with magnitude
-	m_targetDirection = m_destination - getTransform()->position;
+void CharacterRifle::setSlowRadius(float radius)
+{
+	m_slowRadius = radius;
+}
 
-	// normalized direction
-	m_targetDirection = Util::normalize(m_targetDirection);
-
+void CharacterRifle::m_LookWhereYourGoing()
+{
 	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
-	std::cout << "Target Rotation: " << target_rotation << std::endl;
+	//std::cout << "Target Rotation: " << target_rotation << std::endl;
 	
 	auto turn_sensitivity = 5.0f;
 
@@ -148,8 +152,21 @@ void CharacterRifle::m_MoveSeeking()
 	}
 	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
 
+	auto deltaTime = TheGame::Instance()->getDeltaTime();
+
 	getRigidBody()->velocity += getOrientation() * (deltaTime)
 		+0.5f * getRigidBody()->acceleration * (deltaTime);
+}
+
+void CharacterRifle::m_MoveSeeking()
+{
+	// direction with magnitude. Get the direction to the target
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	m_LookWhereYourGoing();
 
 	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
 
@@ -164,17 +181,52 @@ void CharacterRifle::m_MoveFleeing()
 	// The velocity is along this direction, at full speed. normalized direction
 	m_targetDirection = Util::normalize(m_targetDirection);
 
-	getRigidBody()->velocity = m_targetDirection * m_maxSpeed;
+	m_LookWhereYourGoing();
 
-	// Todo specific values change to boundaries
-	if (getTransform()->position.x > 50.0f || getTransform()->position.y > 50.0f)
-		getTransform()->position += getRigidBody()->velocity;
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+	getTransform()->position += getRigidBody()->velocity;
 }
-
 void CharacterRifle::m_MoveArriving()
 {
+	m_targetDirection = m_destination - getTransform()->position;
+
+	m_targetDirection = Util::normalize(m_targetDirection);
+	
+	m_LookWhereYourGoing();
+	
+	m_distance = Util::distance(m_destination, getTransform()->position);
+	//std::cout << "distance : " << m_distance << std::endl;
+
+	if (m_distance < m_targetRadius) // inside of target
+	{
+		m_currentSpeed = 0.0f;
+		return;
+	}
+	else if (m_distance > m_slowRadius) // outside of slow
+	{
+		m_currentSpeed = m_maxSpeed;
+	}
+	else // inside of slow and outside of target
+	{
+		m_currentSpeed = m_maxSpeed * m_distance / m_slowRadius;
+	}
+
+	// The target velocity combines speed and direction
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_currentSpeed);
+	
+	// Acceleration tries to get to the target velocity
+	//getRigidBody()->velocity = m_targetVelocity - getRigidBody()->velocity;
+	//getRigidBody()->velocity /= 0.1f;
+
+	// Check if the acceleration is too fast
+
+	std::cout << "Speed : " << m_currentSpeed << std::endl;
+
+	getTransform()->position += getRigidBody()->velocity;
 }
 
 void CharacterRifle::m_MoveAvoiding()
 {
+	
 }

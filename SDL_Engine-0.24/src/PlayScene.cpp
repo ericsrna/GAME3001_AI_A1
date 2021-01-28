@@ -51,7 +51,7 @@ void PlayScene::handleEvents()
 		m_pTarget->setEnabled(true);
 
 		m_pCharacterRifle->setAlgorithmIndex(1);
-		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 50.0f);
+		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 40.0f);
 		m_pCharacterRifle->setEnabled(true);
 		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
 		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
@@ -71,8 +71,15 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3) && !m_isWorking) // Arrival
 	{
 		m_isWorking = true;
+		
+		m_pTarget->getTransform()->position = glm::vec2(500.0f, 400.0f);
+		m_pTarget->setEnabled(true);
 
 		m_pCharacterRifle->setAlgorithmIndex(3);
+		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 40.0f);
+		m_pCharacterRifle->setEnabled(true);
+		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
+		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4) && !m_isWorking) // Obstacle Avoidance
 	{

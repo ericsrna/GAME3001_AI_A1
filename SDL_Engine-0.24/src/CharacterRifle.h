@@ -32,15 +32,24 @@ public:
 	float getAccelerationRate();
 	void setAccelerationRate(float rate);
 	void setAlgorithmIndex(short index);
+	void setTargetRadius(float radius);
+	void setSlowRadius(float radius);
+	void m_LookWhereYourGoing();
 
 private:
 	glm::vec2 m_destination;
 	glm::vec2 m_targetDirection;
 	glm::vec2 m_orientation;
+	glm::vec2 m_targetVelocity;
 	float m_rotationAngle;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
+	float m_targetRadius;
+	float m_slowRadius;
+	float m_distance;
+	float m_currentSpeed;
+	
 	short m_algorithmIndex;
 
 	// private method
