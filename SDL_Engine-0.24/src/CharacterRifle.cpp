@@ -31,6 +31,7 @@ void CharacterRifle::draw()
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
 	Util::DrawLine(getTransform()->position, (getTransform()->position + m_orientation * 60.0f));
+	Util::DrawCircle(getTransform()->position, getWidth() * 0.5f);
 }
 
 void CharacterRifle::update()
@@ -78,25 +79,6 @@ void CharacterRifle::setOrientation(glm::vec2 orientation)
 	m_orientation = orientation;
 }
 
-float CharacterRifle::getRotation()
-{
-	return m_rotationAngle;
-}
-
-void CharacterRifle::setRotation(float angle)
-{
-	m_rotationAngle = angle;
-
-	const auto offset = 3.0f;
-	const auto angle_in_radians = (angle - offset) * Util::Deg2Rad;
-
-	auto x = cos(angle_in_radians);
-	auto y = sin(angle_in_radians);
-
-	// Convert the angle to a normalized vector and store it in Orientation
-	setOrientation(glm::vec2(x, y));
-}
-
 float CharacterRifle::getTurnRate()
 {
 	return m_turnRate;
@@ -130,6 +112,25 @@ void CharacterRifle::setTargetRadius(float radius)
 void CharacterRifle::setSlowRadius(float radius)
 {
 	m_slowRadius = radius;
+}
+
+float CharacterRifle::getRotation()
+{
+	return m_rotationAngle;
+}
+
+void CharacterRifle::setRotation(float angle)
+{
+	m_rotationAngle = angle;
+
+	const auto offset = 3.0f;
+	const auto angle_in_radians = (angle - offset) * Util::Deg2Rad;
+
+	auto x = cos(angle_in_radians);
+	auto y = sin(angle_in_radians);
+
+	// Convert the angle to a normalized vector and store it in Orientation
+	setOrientation(glm::vec2(x, y));
 }
 
 void CharacterRifle::m_LookWhereYourGoing()
@@ -228,5 +229,15 @@ void CharacterRifle::m_MoveArriving()
 
 void CharacterRifle::m_MoveAvoiding()
 {
-	
+	// direction with magnitude. Get the direction to the target
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	m_LookWhereYourGoing();
+
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+	getTransform()->position += getRigidBody()->velocity;
 }

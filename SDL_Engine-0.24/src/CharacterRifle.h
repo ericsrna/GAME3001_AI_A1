@@ -4,7 +4,6 @@
 
 #include "Sprite.h"
 #include "TextureManager.h"
-#include "Util.h"
 
 class CharacterRifle final : public Sprite
 {

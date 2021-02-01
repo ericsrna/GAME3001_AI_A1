@@ -29,6 +29,15 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	if (CollisionManager::lineAABBCheck(m_pCharacterRifle, m_pObstacle))
+	{
+		m_pCharacterRifle->getRigidBody()->isColliding = true;
+	}
+	else
+	{
+		m_pCharacterRifle->getRigidBody()->isColliding = false;
+	}
 }
 
 void PlayScene::clean()
@@ -110,6 +119,8 @@ void PlayScene::handleEvents()
 		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 50.0f);
 		m_pCharacterRifle->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 		m_pCharacterRifle->setRotation(0.0f);
+
+		std::cout << "============ Reset ============" << std::endl;
 	}
 }
 
