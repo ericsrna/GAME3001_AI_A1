@@ -44,6 +44,7 @@ void PlayScene::handleEvents()
 	{
 		TheGame::Instance()->quit();
 	}
+	
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1) && !m_isWorking) // Seeking
 	{
 		m_isWorking = true;
@@ -56,6 +57,7 @@ void PlayScene::handleEvents()
 		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
 		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
+	
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2) && !m_isWorking) // Fleeing
 	{
 		m_isWorking = true;
@@ -68,6 +70,7 @@ void PlayScene::handleEvents()
 		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
 		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
+	
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3) && !m_isWorking) // Arrival
 	{
 		m_isWorking = true;
@@ -81,20 +84,32 @@ void PlayScene::handleEvents()
 		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
 		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
+	
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4) && !m_isWorking) // Obstacle Avoidance
 	{
 		m_isWorking = true;
-
+		m_pTarget->getTransform()->position = glm::vec2(700.0f, 300.0f);
+		m_pTarget->setEnabled(true);
+		m_pObstacle->getTransform()->position = glm::vec2(400.0f, 300.0f);
+		m_pObstacle->setEnabled(true);
+		
 		m_pCharacterRifle->setAlgorithmIndex(4);
+		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 300.0f);
+		m_pCharacterRifle->setEnabled(true);
+		m_pCharacterRifle->setDestination(m_pTarget->getTransform()->position);
+		m_pCharacterRifle->setRotation(m_pCharacterRifle->getRotation() * Util::Rad2Deg);
 	}
+	
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_5)) // Reset
 	{
 		m_isWorking = false;
+		m_pTarget->setEnabled(false);
+		m_pObstacle->setEnabled(false);
+		
 		m_pCharacterRifle->setEnabled(false);
 		m_pCharacterRifle->getTransform()->position = glm::vec2(50.0f, 50.0f);
 		m_pCharacterRifle->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 		m_pCharacterRifle->setRotation(0.0f);
-
 	}
 }
 
@@ -104,11 +119,9 @@ void PlayScene::start()
 	m_guiTitle = "Play Scene";
 	
 	// Plane Sprite
-	m_pPlaneSprite = new Plane();
-	m_pPlaneSprite->getTransform()->position = glm::vec2(50.0f, 50.0f);
-	m_pPlaneSprite->setEnabled(false);
-	m_pPlaneSprite->setMaxSpeed(10.0f);
-	addChild(m_pPlaneSprite);
+	m_pObstacle = new Obstacle();
+	m_pObstacle->setEnabled(false);
+	addChild(m_pObstacle);
 
 	m_pCharacterRifle = new CharacterRifle();
 	m_pCharacterRifle->setEnabled(false);
@@ -116,7 +129,6 @@ void PlayScene::start()
 
 	// Target
 	m_pTarget = new Target();
-	m_pTarget->getTransform()->position = glm::vec2(700.0f, 500.0f);
 	m_pTarget->setEnabled(false);
 	addChild(m_pTarget);
 

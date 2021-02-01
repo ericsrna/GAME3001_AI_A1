@@ -20,21 +20,22 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
-	// getters and setters
+	// getters
+	glm::vec2 getOrientation();
+	float getRotation();
+	float getTurnRate();
+	float getAccelerationRate();
+	
+	// setters
 	void setDestination(glm::vec2 destination);
 	void setMaxSpeed(float speed);
-	glm::vec2 getOrientation();
 	void setOrientation(glm::vec2 orientation);
-	float getRotation();
 	void setRotation(float angle);
-	float getTurnRate();
 	void setTurnRate(float rate);
-	float getAccelerationRate();
 	void setAccelerationRate(float rate);
 	void setAlgorithmIndex(short index);
 	void setTargetRadius(float radius);
 	void setSlowRadius(float radius);
-	void m_LookWhereYourGoing();
 
 private:
 	glm::vec2 m_destination;
@@ -57,7 +58,7 @@ private:
 	void m_MoveFleeing();
 	void m_MoveArriving();
 	void m_MoveAvoiding();
-	
+	void m_LookWhereYourGoing();
 };
 
 #endif

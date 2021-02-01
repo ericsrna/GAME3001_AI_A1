@@ -30,7 +30,7 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
+	Obstacle* m_pObstacle;
 	Target* m_pTarget;
 	CharacterRifle* m_pCharacterRifle;
 

@@ -8,10 +8,9 @@ Obstacle::Obstacle()
 	setWidth(size.x);
 	setHeight(size.y);
 
-	getTransform()->position = glm::vec2(300.0f, 300.0f);
-
-	setType(OBSTACLE);
+	getTransform()->position = glm::vec2(0.0f, 900.0f);
 	getRigidBody()->isColliding = false;
+	setType(OBSTACLE);
 }
 
 Obstacle::~Obstacle()
