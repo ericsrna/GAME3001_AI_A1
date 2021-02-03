@@ -213,7 +213,7 @@ void PlayScene::start()
 	if (Mix_Init(MIX_INIT_MP3) !=0)
 	{
 		m_pSoundManager->Instance().load("../Assets/audio/BGM.mp3", "BGM", SOUND_MUSIC);
-		m_pSoundManager->Instance().setMusicVolume(50);
+		m_pSoundManager->Instance().setMusicVolume(40);
 		m_pSoundManager->Instance().playMusic("BGM");
 
 		m_pSoundManager->Instance().load("../Assets/audio/saw.wav", "Saw", SOUND_SFX);

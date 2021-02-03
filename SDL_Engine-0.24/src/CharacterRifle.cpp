@@ -149,7 +149,7 @@ void CharacterRifle::m_MoveAvoiding()
 	
 	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
 
-	auto turn_sensitivity = 0.0f;
+	auto turn_sensitivity = 3.0f;
 
 	if (abs(target_rotation) > turn_sensitivity)
 	{
