@@ -4,6 +4,7 @@
 
 #include "Sprite.h"
 #include "TextureManager.h"
+#include "SoundManager.h"
 
 class CharacterRifle final : public Sprite
 {
@@ -35,6 +36,7 @@ public:
 	void setAlgorithmIndex(short index);
 	void setTargetRadius(float radius);
 	void setSlowRadius(float radius);
+	void setIsMoving(bool flag);
 
 private:
 	glm::vec2 m_destination;
@@ -49,7 +51,8 @@ private:
 	float m_slowRadius;
 	float m_distance;
 	float m_currentSpeed;
-	
+
+	bool m_isMoving;
 	short m_algorithmIndex;
 
 	// private method
@@ -57,7 +60,6 @@ private:
 	void m_MoveFleeing();
 	void m_MoveArriving();
 	void m_MoveAvoiding();
-	void m_LookWhereYourGoing();
 };
 
 #endif

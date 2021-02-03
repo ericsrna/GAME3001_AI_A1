@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ship.h"
 #include "CharacterRifle.h"
+#include "ObstaclePath.h"
 #include <GLM/gtx/norm.hpp>
 #include "SoundManager.h"
 
@@ -24,6 +25,7 @@ public:
 	static int minSquaredDistanceLineLine(glm::vec2 line1_start, glm::vec2 line1_end, glm::vec2 line2_start, glm::vec2 line2_end);
 	static bool lineAABBCheck(Ship* object1, GameObject* object2);
 	static bool lineAABBCheck(CharacterRifle* object1, GameObject* object2);
+	static bool lineAABBCheck(ObstaclePath* object1, GameObject* object2);
 
 	static int circleAABBsquaredDistance(glm::vec2 circle_centre, int circle_radius, glm::vec2 box_start, int box_width, int box_height);
 	static bool circleAABBCheck(GameObject* object1, GameObject* object2);

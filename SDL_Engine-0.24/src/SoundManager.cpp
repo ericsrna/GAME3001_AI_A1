@@ -101,6 +101,11 @@ void SoundManager::playSound(const std::string& id, const int loop/* = 0 */, con
 	}	
 }
 
+void SoundManager::pauseSound(const int channel)
+{
+	Mix_Pause(channel);
+}
+
 void SoundManager::setMusicVolume(const int vol) const
 {
 	if (vol >= 0 && vol <= 128)
