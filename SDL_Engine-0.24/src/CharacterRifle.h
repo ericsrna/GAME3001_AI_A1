@@ -4,7 +4,7 @@
 
 #include "Sprite.h"
 #include "TextureManager.h"
-#include "Util.h"
+#include "SoundManager.h"
 
 class CharacterRifle final : public Sprite
 {
@@ -20,27 +20,39 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
-	// getters and setters
+	// getters
+	glm::vec2 getOrientation();
+	float getRotation();
+	float getTurnRate();
+	float getAccelerationRate();
+	
+	// setters
 	void setDestination(glm::vec2 destination);
 	void setMaxSpeed(float speed);
-	glm::vec2 getOrientation();
 	void setOrientation(glm::vec2 orientation);
-	float getRotation();
 	void setRotation(float angle);
-	float getTurnRate();
 	void setTurnRate(float rate);
-	float getAccelerationRate();
 	void setAccelerationRate(float rate);
 	void setAlgorithmIndex(short index);
+	void setTargetRadius(float radius);
+	void setSlowRadius(float radius);
+	void setIsMoving(bool flag);
 
 private:
 	glm::vec2 m_destination;
 	glm::vec2 m_targetDirection;
 	glm::vec2 m_orientation;
+	glm::vec2 m_targetVelocity;
 	float m_rotationAngle;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
+	float m_targetRadius;
+	float m_slowRadius;
+	float m_distance;
+	float m_currentSpeed;
+
+	bool m_isMoving;
 	short m_algorithmIndex;
 
 	// private method
@@ -48,7 +60,6 @@ private:
 	void m_MoveFleeing();
 	void m_MoveArriving();
 	void m_MoveAvoiding();
-	
 };
 
 #endif

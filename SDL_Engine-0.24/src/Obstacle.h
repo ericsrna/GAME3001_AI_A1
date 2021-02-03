@@ -4,6 +4,7 @@
 
 #include "DisplayObject.h"
 #include "TextureManager.h"
+#include "ObstaclePath.h"
 
 class Obstacle final : public DisplayObject
 {
@@ -18,6 +19,8 @@ public:
 	void draw() override;
 	void update() override;
 	void clean() override;
+
+	std::vector<ObstaclePath>* m_pObstaclePath[];
 };
 
 

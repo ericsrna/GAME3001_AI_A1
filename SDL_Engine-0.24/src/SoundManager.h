@@ -28,6 +28,7 @@ public:
 	void pauseMusic() const;
 	void resumeMusic() const;
 	void playSound(const std::string& id, int loop = 0, int channel = -1);
+	void pauseSound(int channel);
 	void setMusicVolume(const int vol) const;
 	void setSoundVolume(const int vol) const;
 	void setAllVolume(const int vol) const;
