@@ -10,6 +10,7 @@
 #include "Label.h"
 #include "Obstacle.h"
 #include "Target.h"
+#include "SoundManager.h"
 
 class PlayScene : public Scene
 {
@@ -23,6 +24,9 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
+	void setInstruction();
+	void setInstructionVisibility(bool flag);
+
 private:
 	// IMGUI Function
 	void GUI_Function() const;
@@ -30,11 +34,20 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
+	Obstacle* m_pObstacle;
 	Target* m_pTarget;
 	CharacterRifle* m_pCharacterRifle;
+	std::vector<ObstaclePath*> m_pObstaclePath;
+	SoundManager* m_pSoundManager;
 
 	bool m_isWorking;
+
+	Label* m_pInstructionPress1{};
+	Label* m_pInstructionPress2{};
+	Label* m_pInstructionPress3{};
+	Label* m_pInstructionPress4{};
+	Label* m_pInstructionPress5{};
+	
 	/*Player* m_pPlayer;
 	bool m_playerFacingRight;*/
 
